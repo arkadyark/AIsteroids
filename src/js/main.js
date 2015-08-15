@@ -13,6 +13,7 @@ var States = {
  */
 var Game = Class.extend({
 
+
     /**
      * Constructor
      */
@@ -70,9 +71,17 @@ var Game = Class.extend({
     },
 
     startGame : function() {
-        this.inputs = 
-            [new InputHandeler(editor.getValue(), 1),
-                new InputHandeler(editor.getValue(), 2)]
-                this.nextState = States.GAME;
+        self = this;
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    self.inputs = 
+                        [new InputHandeler(editor.getValue(), 1),
+                            new InputHandeler(xmlhttp.responseText, 2)]
+                    self.nextState = States.GAME;
+                }
+        }
+        xmlhttp.open("GET", "js/strategies/dummy.js", true);
+        xmlhttp.send()
     }
 });

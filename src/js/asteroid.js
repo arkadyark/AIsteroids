@@ -33,7 +33,7 @@ var Asteroid = Polygon.extend({
 
 		// Generate and calculate velocity
 		var r = 2*Math.PI*Math.random();
-		var v = Math.random() + 1;
+		var v = 0.5*(Math.random() + 1);
 		this.vel = {
 			x: v*Math.cos(r),
 			y: v*Math.sin(r)

@@ -4,7 +4,7 @@ function getCookie() {
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return decodeURI(c.substring(name.length,c.length));
+        if (c.indexOf(name) == 0) return decodeURIComponent(c.substring(name.length,c.length));
     }
 }
 
@@ -12,7 +12,7 @@ function save() {
     var cname = "savedCode";
     var cvalue = editor.getValue();
     if (getCookie() != cvalue) {
-        document.cookie = cname + "=" + encodeURI(cvalue) + ";";
+        document.cookie = cname + "=" + encodeURIComponent(cvalue) + ";";
 //        console.log("Saved changes");
     }
 }

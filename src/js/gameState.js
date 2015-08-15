@@ -70,7 +70,7 @@ var GameState = State.extend({
                 x : this.player1.x,
                 y : this.player1.y,
                 vel : this.player1.vel,
-                angle : this.player1.angle
+                angle : this.player1.angle % Math.PI*2
             },
             otherShip : {
                 x : this.player2.x,
