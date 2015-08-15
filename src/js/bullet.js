@@ -17,6 +17,7 @@ var Bullet = Class.extend({
 	 * @param  {number} angle direction in which to fire
 	 */
 	init: function(x, y, angle) {
+        // Start bullet away from player so it doesn't shoot itself right away
 		this.x = x;
 		this.y = y;
 
@@ -27,6 +28,9 @@ var Bullet = Class.extend({
 			x: 5*Math.cos(angle),
 			y: 5*Math.sin(angle)
 		}
+
+        this.x += this.vel.x;
+        this.y += this.vel.y;
 	},
 	
 	/**

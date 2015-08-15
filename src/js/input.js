@@ -9,9 +9,10 @@ var InputHandeler = Class.extend({
 	 * 
 	 * @param  {object} keys keys to monitor
 	 */
-	init: function(submission) {
+	init: function(submission, playerNumber) {
 		// declare private fields
 		this.move = {forward : false, fire : false, rotateLeft : false, rotateRight : false};
+        this.playerNumber = playerNumber;
         eval(submission);
         this.getMove = getMove
 		var self = this;
@@ -19,7 +20,7 @@ var InputHandeler = Class.extend({
 
     updateInputs : function(gameState) {
         try {
-            var move = this.getMove(gameState.ship, gameState.bullets, gameState.asteroids) || {};
+            var move = this.getMove(gameState.myShip, gameState.otherShip, gameState.myBullets, gameState.otherBullets, gameState.asteroids) || {};
         } catch (e) {
             console.error(e)
             var move = {};
