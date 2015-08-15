@@ -134,6 +134,7 @@ var Ship = Polygon.extend({
 		this._super(theta);
 		this.flames.rotate(theta);
 		this.angle += theta;
+        this.angle = (this.angle % Math.PI*2 + Math.PI*2) % Math.PI*2;
 	},
 
 	/**

@@ -69,12 +69,14 @@ var GameState = State.extend({
             myShip : {
                 x : this.player1.x,
                 y : this.player1.y,
-                vel : this.player1.vel
+                vel : this.player1.vel,
+                angle : this.player1.angle
             },
             otherShip : {
                 x : this.player2.x,
                 y : this.player2.y,
-                vel : this.player2.vel
+                vel : this.player2.vel,
+                angle : this.player2.angle
             },
             myBullets : this.p1bullets.map(this.getClientBullet),
             otherBullets : this.p2bullets.map(this.getClientBullet),
