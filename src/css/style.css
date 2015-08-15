@@ -1,3 +1,9 @@
+.title {
+    font-family : 'Press Start 2P';
+    color : white;
+    text-align : center;
+}
+
 body {
     background-color : black;
 }

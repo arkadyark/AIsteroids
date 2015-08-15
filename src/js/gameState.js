@@ -122,7 +122,6 @@ var GameState = State.extend({
 	 * @param  {InputHandeler} input keeps track of all pressed keys
 	 */
 	handleInputs: function(input) {
-<<<<<<< HEAD
 		if (input.move.rotateRight) {
 			this.ship.rotate(0.06);
 		}
@@ -138,41 +137,6 @@ var GameState = State.extend({
             if (newBullet != undefined) {
                 this.bullets.push(newBullet);
             }
-=======
-		// only update ship orientations and velocities if they're visible
-		if (!this.player1.visible && !this.player2.visible) {
-			if (input.isPressed("spacebar")) {
-				// change state if game over
-				if (this.gameOver) {
-		//TODO //			if(lifep1 == 1) {}
-		//			else if(lifep2 == 1) {}
-					this.game.nextState = States.END;
-					this.game.stateVars.score = this.score;
-					return;
-				}
-				this.player1.visible = true;
-				this.player2.visible = true;
-			}
-			return;
-		}
-
-		if (input.isDown("right")) {
-			this.player1.rotate(0.06);
-			this.player2.rotate(0.06);
-		}
-		if (input.isDown("left")) {
-			this.player1.rotate(-0.06);
-			this.player2.rotate(-0.06);
-		}
-		if (input.isDown("up")) {
-			this.player1.addVel();
-			this.player2.addVel();
-		}
-
-		if (input.isPressed("spacebar")) {
-			this.p1bullets.push(this.player1.shoot());
-			this.p2bullets.push(this.player2.shoot());
->>>>>>> e455f2adf103b556984dc94306e542ee1eeca781
 		}
 	},
 
@@ -180,46 +144,6 @@ var GameState = State.extend({
 	 * @override State.update
 	 */
 	update: function() {
-		// check if bullets hits another ship
-		// TODO figure out why this doesn't work
-		/*
-		var length = this.p2bullets.length;
-		for (var j = 0; j < length; j++) {
-			var b = this.p2bullets[j];
-			console.log("fired");
-			
-			if (this.player1.hasPoint(b.x, b.y)) {
-				console.log("hit p1");
-				this.p2bullets.splice(j, 1);
-				length--;
-				j--;
-
-				this.lifep1--;
-				if (this.lifep1 <= 0) {
-					this.gameOver = true;
-				}
-				this.player1.visible = false;
-			}
-		}
-
-		length = this.p1bullets.length;
-		for (var j = 0; j < length; j++) {
-			var b = this.p1bullets[j];
-			
-			if (this.player2.hasPoint(b.x, b.y)) {
-				console.log("hit p2");
-				this.p1bullets.splice(j, 1);
-				length--;
-				j--;
-
-				this.lifep2--;
-				if (this.lifep2 <= 0) {
-					this.gameOver = true;
-				}
-				this.player2.visible = false;
-			}
-		}
-		*/
 
 		// iterate thru and update all asteroids
 		for (var i = 0, len = this.asteroids.length; i < len; i++) {
