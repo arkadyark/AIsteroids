@@ -92,11 +92,12 @@ var GameState = State.extend({
         var num = Math.round(10*Math.atan(this.lvl/25)) + 3;
 
         // set ship position
-        this.player1.x = this.canvasWidth/2;
-        this.player1.y = this.canvasHeight/2;
+        this.player1.x = this.canvasWidth/2 - 100;
+        this.player1.y = this.canvasHeight/2 - 100;
 
-        this.player2.x = this.canvasWidth/3;
-        this.player2.y = this.canvasHeight/3;
+        this.player2.x = this.canvasWidth/2 + 100;
+        this.player2.y = this.canvasHeight/2 + 100;
+        this.player2.rotate(Math.PI);
 
         // init bullet array
         this.p1bullets = [];
