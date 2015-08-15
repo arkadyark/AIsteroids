@@ -7,7 +7,7 @@ var sourceSupplied, gameWorld;
 var requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
         window.setTimeout(callback, 100);
     };
-    
+
 // TODO setup who wins who loses (winner)
 function init(options) {
     // TODO make sure main is hooked up properly
@@ -27,8 +27,8 @@ function run() {
 
     tickNum++;
     display.render(gameWorld);
-    tc.textContent = "Tick " + tickNum;
     //update textboxes here
+    console.log("Tick " + tickNum);
     requestAnimFrame(run);
 }
 
