@@ -43,6 +43,34 @@ var GameState = State.extend({
 		this.generateLvl();
 	},
 
+    getClientBullet : function(bullet) {
+        return {
+            x : bullet.x,
+            y : bullet.y
+            // TODO - add bullet shooter
+        }
+    },
+
+    getClientAsteroid : function(asteroid) {
+        return {
+            x : asteroid.x,
+            y : asteroid.y,
+            size : asteroid.size
+        }
+    },
+
+    getClientGameState : function() {
+        return {
+            ship : {
+                x : this.ship.x,
+                y : this.ship.y,
+                vel : this.ship.vel
+            },
+            bullets : this.bullets.map(this.getClientBullet),
+            asteroids : this.asteroids.map(this.getClientAsteroid)
+        }
+    },
+
 	/**
 	 * Create and initiate asteroids and bullets
 	 */
@@ -85,32 +113,21 @@ var GameState = State.extend({
 	 * @param  {InputHandeler} input keeps track of all pressed keys
 	 */
 	handleInputs: function(input) {
-		// only update ship orientation and velocity if it's visible
-		if (!this.ship.visible) {
-			if (input.isPressed("spacebar")) {
-				// change state if game over
-				if (this.gameOver) {
-					this.game.nextState = States.END;
-					this.game.stateVars.score = this.score;
-					return;
-				}
-				this.ship.visible = true;
-			}
-			return;
-		}
-
-		if (input.isDown("right")) {
+		if (input.move.rotateRight) {
 			this.ship.rotate(0.06);
 		}
-		if (input.isDown("left")) {
+		if (input.move.rotateLeft) {
 			this.ship.rotate(-0.06);
 		}
-		if (input.isDown("up")) {
+		if (input.move.forward) {
 			this.ship.addVel();
 		}
 
-		if (input.isPressed("spacebar")) {
-			this.bullets.push(this.ship.shoot());
+		if (input.move.fire) {
+			var newBullet = this.ship.shoot(this.bullets.length);
+            if (newBullet != undefined) {
+                this.bullets.push(newBullet);
+            }
 		}
 	},
 
@@ -121,7 +138,9 @@ var GameState = State.extend({
 		// iterate thru and update all asteroids
 		for (var i = 0, len = this.asteroids.length; i < len; i++) {
 			var a = this.asteroids[i];
-			a.update();
+            if (a != undefined) {
+			    a.update();
+            }
 
 			// if ship collids reset position and decrement lives
 			if (this.ship.collide(a)) {
@@ -135,14 +154,13 @@ var GameState = State.extend({
 				if (this.lives <= 0) {
 					this.gameOver = true;
 				}
-				this.ship.visible = false;
 			}
 
 			// check if bullets hits the current asteroid
 			for (var j = 0, len2 = this.bullets.length; j < len2; j++) {
 				var b = this.bullets[j];
 				
-				if (a.hasPoint(b.x, b.y)) {
+				if (a != undefined && a.hasPoint(b.x, b.y)) {
 					this.bullets.splice(j, 1);
 					len2--;
 					j--;

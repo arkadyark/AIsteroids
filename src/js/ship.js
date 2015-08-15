@@ -1,6 +1,10 @@
 /**
  * Ship class, extends Polygon see polygon.js
  */
+
+TURNS_BETWEEN_SHOTS = 5
+MAX_BULLETS = 5
+
 var Ship = Polygon.extend({
 
 	/**
@@ -24,6 +28,8 @@ var Ship = Polygon.extend({
 		// create, init and scale flame polygon
 		this.flames = new Polygon(pf);
 		this.flames.scale(s);
+
+        this.ticksSinceLastShot = 0;
 
 		// visual flags
 		this.drawFlames = false;
@@ -54,14 +60,11 @@ var Ship = Polygon.extend({
 	 */
 	collide: function(astr) {
 		// don't test if not visible
-		if (!this.visible) {
-			return false;
-		}
 		for (var i = 0, len = this.points.length - 2; i < len; i += 2) {
 			var x = this.points[i] + this.x;
 			var y = this.points[i+1] + this.y;
 
-			if (astr.hasPoint(x, y)) {
+			if (astr != undefined && astr.hasPoint(x, y)) {
 				return true;
 			}
 		}
@@ -74,11 +77,14 @@ var Ship = Polygon.extend({
 	 * 
 	 * @return {Bullet} the initated bullet
 	 */
-	shoot: function() {
-		var b = new Bullet(this.points[0] + this.x, this.points[1] + this.y, this.angle);
-		b.maxX = this.maxX;
-		b.maxY = this.maxY;
-		return b;
+	shoot: function(numBullets) {
+        if (this.ticksSinceLastShot > TURNS_BETWEEN_SHOTS && numBullets < MAX_BULLETS) {
+            this.ticksSinceLastShot = 0
+            var b = new Bullet(this.points[0] + this.x, this.points[1] + this.y, this.angle);
+            b.maxX = this.maxX;
+            b.maxY = this.maxY;
+            return b;
+        }
 	},
 
 	/**
@@ -89,10 +95,8 @@ var Ship = Polygon.extend({
 		// length of veloctity vector estimated with pythagoras
 		// theorem, i.e.
 		// 		a*a + b*b = c*c
-		if (this.vel.x*this.vel.x + this.vel.y*this.vel.y < 20*20) {
-			this.vel.x += 0.05*Math.cos(this.angle);
-			this.vel.y += 0.05*Math.sin(this.angle);
-		}
+        this.vel.x = 1.5*Math.cos(this.angle);
+        this.vel.y = 1.5*Math.sin(this.angle);
 		this.drawFlames = true;
 	},
 
@@ -113,6 +117,8 @@ var Ship = Polygon.extend({
 	 * Decrease velocity and update ship position
 	 */
 	update: function() {
+        this.ticksSinceLastShot += 1;
+
 		// update position
 		this.x += this.vel.x;
 		this.y += this.vel.y;

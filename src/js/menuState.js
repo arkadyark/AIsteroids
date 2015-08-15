@@ -39,17 +39,6 @@ var MenuState = State.extend({
 	},
 
 	/**
-	 * @override State.handleInputs
-	 * 
-	 * @param  {InputHandeler} input keeps track of all pressed keys
-	 */
-	handleInputs: function(input) {
-		if (input.isPressed("spacebar")) {
-			this.game.nextState = States.GAME;
-		}
-	},
-
-	/**
 	 * @override State.update
 	 */
 	update: function() {
@@ -71,9 +60,5 @@ var MenuState = State.extend({
 		for (var i = 0, len = this.asteroids.length; i < len; i++) {
 			this.asteroids[i].draw(ctx);
 		}
-
-		// draw title text
-		ctx.vectorText("ASTEROIDS", 6, null, 180);
-		ctx.vectorText("push space to play", 2, null, 260);
 	}
 });

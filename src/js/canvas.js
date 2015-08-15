@@ -12,7 +12,7 @@ var Canvas = Class.extend({
 	 */
 	init: function(width, height) {
 		// create and set dimension of internal canvas
-		this.canvas = document.createElement("canvas");
+		this.canvas = document.getElementById("game-canvas");
 		this.canvas.width = width;
 		this.canvas.height = height;
 
@@ -126,9 +126,6 @@ var Canvas = Class.extend({
 			// return augmented drawing context
 			return ctx;
 		})(this.canvas.getContext("2d"));
-
-		// append internal canvas to body of document
-		document.body.appendChild(this.canvas);
 	},
 
 	/**

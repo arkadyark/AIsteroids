@@ -18,16 +18,7 @@ var Game = Class.extend({
 	 */
 	init: function() {
 		// public important members used for update and rendering
-		this.canvas = new Canvas(640, 480);
-
-		this.input = new InputHandeler({
-			left:     37,
-			up:       38,
-			right:    39,
-			down:     40,
-			spacebar: 32,
-			enter:    13
-		});
+		this.canvas = new Canvas(626, 480);
 
 		// set stroke style to white, since canvas has black
 		// bacground
@@ -64,10 +55,19 @@ var Game = Class.extend({
 				self.nextState = States.NO_CHANGE;
 			}
 
-			// update and render active state
-			self.currentState.handleInputs(self.input);
-			self.currentState.update();
-			self.currentState.render(self.canvas.ctx);
+            if (self.input != undefined) {
+                // update and render active state
+                self.input.updateInputs(self.currentState.getClientGameState())
+                self.currentState.handleInputs(self.input);
+            }
+
+            self.currentState.update();
+            self.currentState.render(self.canvas.ctx);
 		});
-	}
+	},
+
+    startGame : function() {
+		this.input = new InputHandeler(editor.getValue());
+        this.nextState = States.GAME;
+    }
 });

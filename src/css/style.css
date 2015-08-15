@@ -1,16 +1,35 @@
-* {
-	padding: 0;
-	margin: 0;
+body {
+    background-color : black;
 }
 
-/* Center canvas and stuff */
+.main-content {
+    background-color : white;
+    width : 640px;
+    margin : 0 auto;
+}
+
+.game-screen {
+    padding : 5px;
+    border : solid 2px black;
+}
+
 canvas {
-	background-color: #000;
 	display: block;
-	position: absolute;
-	margin: auto;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
+    background-color : black;
+}
+
+.game-controls {
+    padding : 10px 0;
+    background-color : black;
+    text-align : center;
+}
+
+.game-controls span {
+    cursor : pointer;
+    font-size : 30px;
+    color : white;
+}
+
+#editor {
+    height : 600px;
 }
