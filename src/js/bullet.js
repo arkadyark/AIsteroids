@@ -28,7 +28,7 @@ var Bullet = Class.extend({
 			y: 5*Math.sin(angle)
 		}
 	},
-
+	
 	/**
 	 * Update position of bullet
 	 */

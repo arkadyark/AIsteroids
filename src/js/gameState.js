@@ -144,6 +144,55 @@ var GameState = State.extend({
 	 * @override State.update
 	 */
 	update: function() {
+		// check if bullets hits another ship
+		for (var i = 0, len = this.p1bullets.length; i < len; i++) {
+			var b = this.p1bullets[i];
+			b.update();
+
+			// if any of the player2's points equals the bullet then there is a collision
+			if (this.player2.collidebullet(b)) {
+				this.player2.x = this.canvasWidth/3;
+				this.player2.y = this.canvasHeight/3;
+				this.player2.vel = {
+					x: 0,
+					y: 0
+				}
+				this.lifep2--;
+				if (this.lifep2 <= 0) {
+					this.gameOver = true;
+				}
+				this.player2.visible = false;
+
+				// remove bullet
+				this.p1bullets.splice(i, 1);
+				len--;
+				i--;
+			}
+		}
+
+		for (var i = 0, len = this.p2bullets.length; i < len; i++) {
+			var b = this.p2bullets[i];
+			b.update();
+
+			if (this.player1.collidebullet(b)) {
+				this.player1.x = this.canvasWidth/2;
+				this.player1.y = this.canvasHeight/2;
+				this.player1.vel = {
+					x: 0,
+					y: 0
+				}
+				this.lifep1--;
+				if (this.lifep1 <= 0) {
+					this.gameOver = true;
+				}
+				this.player1.visible = false;
+
+				// remove bullet
+				this.p2bullets.splice(i, 1);
+				len--;
+				i--;
+			}
+		}
 
 		// iterate thru and update all asteroids
 		for (var i = 0, len = this.asteroids.length; i < len; i++) {
@@ -264,31 +313,6 @@ var GameState = State.extend({
 			}
 		}
 
-		// iterate thru and update all bullets
-		for (var i = 0, len = this.p1bullets.length; i < len; i++) {
-			var b = this.p1bullets[i];
-			b.update();
-
-			// remove bullet if removeflag is setted
-			if (b.shallRemove) {
-				this.p1bullets.splice(i, 1);
-				len--;
-				i--;
-			}
-		}
-
-		for (var i = 0, len = this.p2bullets.length; i < len; i++) {
-			var b = this.p2bullets[i];
-			b.update();
-
-			// remove bullet if removeflag is setted
-			if (b.shallRemove) {
-				this.p2bullets.splice(i, 1);
-				len--;
-				i--;
-			}
-		}
-
 		// update ship
 		this.player1.update();
 		this.player2.update();
@@ -313,7 +337,6 @@ var GameState = State.extend({
 		for (var i = 0; i < this.lifep1; i++) {
 			ctx.drawPolygon(this.lifepolygon, 40+15*i, 50);
 		}
-
 
 		// draw all asteroids and bullets
 		for (var i = 0, len = this.asteroids.length; i < len; i++) {

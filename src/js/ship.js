@@ -72,6 +72,29 @@ var Ship = Polygon.extend({
 	},
 
 	/**
+	 * Returns whether ship is colling with a bullet
+	 * 
+	 * @param  {Asteroid} obj bullet to test
+	 * @return {Boolean}       result from test
+	 */
+	collidebullet: function(obj) {
+		// don't test if not visible
+		if (!this.visible) {
+			return false;
+		}
+		for (var i = 0, len = this.points.length - 2; i < len; i += 2) {
+			var x = this.points[i] + this.x;
+			var y = this.points[i+1] + this.y;
+
+			var distance = Math.sqrt(Math.pow(obj.x-x,2) + Math.pow(obj.y-y,2));
+			if (distance < 7) {
+				return true;
+			}
+		}
+		return false;
+	},
+
+	/**
 	 * Create and return bullet with arguments from current
 	 * direction and position
 	 * 
