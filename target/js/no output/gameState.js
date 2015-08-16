@@ -18,8 +18,8 @@ var GameState = State.extend({
         this._super(game);
 
         // store canvas dimensions for later use
-        this.canvasWidth = game.canvas.ctx.width;
-        this.canvasHeight = game.canvas.ctx.height;
+        this.canvasWidth = game.width;
+        this.canvasHeight = game.height;
 
         // create ship objects
         this.player1 = new Ship(Points.SHIP, Points.FLAMES, 2, 0, 0);
@@ -376,34 +376,6 @@ var GameState = State.extend({
      * @param  {context2d} ctx augmented drawing context
      */
     render: function(ctx) {
-        ctx.clearAll();
-        // draw score and extra lives
-        // TODO delete this next block of code
-        ctx.vectorText(this.score, 3, 35, 15);
-        for (var i = 0; i < this.lifep1; i++) {
-            ctx.drawPolygon(this.lifepolygon, 40+15*i, 50);
-        }
-
-        // draw all asteroids and bullets
-        for (var i = 0, len = this.asteroids.length; i < len; i++) {
-            this.asteroids[i].draw(ctx);
-        }
-        for (var i = 0, len = this.p1bullets.length; i < len; i++) {
-            this.p1bullets[i].draw(ctx);
-        }
-        for (var i = 0, len = this.p2bullets.length; i < len; i++) {
-            this.p2bullets[i].draw(ctx);
-        }
-        // draw game over messege
-        if (this.gameOver) {
-            if (this.outcome > 0) {
-                ctx.vectorText("You lose", 4, null, null);
-            } else {
-                ctx.vectorText("You win", 4, null, null);
-            }
-        }
-        // draw ship
-        this.player1.draw(ctx);
-        this.player2.draw(ctx);
+        // Leave this to satisfy interface
     }
 });

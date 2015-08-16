@@ -1,6 +1,11 @@
 /**
  * MenuState class, set on game start
  */
+var State = require('./state.js');
+var Points = require('./points.js');
+var Asteroid = require('./asteroid.js');
+var AsteroidSize = 8;
+
 var MenuState = State.extend({
 
 	/**
@@ -11,9 +16,8 @@ var MenuState = State.extend({
 	init: function(game) {
 		this._super(game); // call super construtor
 
-		// store canvas dimensions for later use
-		this.canvasWidth = game.canvas.ctx.width;
-		this.canvasHeight = game.canvas.ctx.height;
+		this.canvasWidth = game.width;
+		this.canvasHeight = game.height;
 
 		// create and initiate background asteroids
 		var num = Math.random()*5 + 5;
@@ -54,11 +58,8 @@ var MenuState = State.extend({
 	 * @param  {context2d} ctx augmented drawing context
 	 */
 	render: function(ctx) {
-		ctx.clearAll();
-
-		// draw all asteroids
-		for (var i = 0, len = this.asteroids.length; i < len; i++) {
-			this.asteroids[i].draw(ctx);
-		}
+		/// Leave this here in order to satisfy the requirements for extending a class.
 	}
 });
+
+module.exports = MenuState;

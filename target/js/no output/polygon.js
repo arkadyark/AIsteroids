@@ -2,6 +2,7 @@
  * Polygon class, simple polygon class with method as rotation and
  * scaling
  */
+
 var Polygon = Class.extend({
 
 	/**
@@ -80,3 +81,5 @@ var Polygon = Class.extend({
 		return c;
 	}
 });
+
+module.exports = Polygon;

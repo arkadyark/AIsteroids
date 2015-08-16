@@ -1,6 +1,10 @@
 var express = require('express')
 var http = require('http');
 var fs = require('fs');
+var bodyParser = require('body-parser');
+
+var Class = require('./target/js/lib/class.js');
+var Game = require('./target/js/no output/main.js');
 
 var app = express();
 
@@ -8,6 +12,8 @@ LEARNING_RATE = 0.001;
 NUM_GAMES = 100;
 moves = ['fire', 'forward', 'rotateLeft', 'rotateRight'];
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname + '/target'))
 
 app.post('/gameFinished', function(req, res) {
@@ -36,9 +42,9 @@ tryUpdateWeights = function(data, submission) {
         var AIString = 'var weights = ' + randomWeights + ';' + data;
         var winRate = 0;
         for (var i = 0; i < NUM_GAMES; i++) {
-            winRate += playGame(AIString, submission)
+            winRate += playGame(AIString, submission);
         }
-        winRate = winRate / NUM_GAMES
+        winRate = winRate / NUM_GAMES;
         if (winRate > originalWinRate) {
             var newData = {winRate : winRate, weights : randomWeights}
             fs.writeFile('./weights.json', JSON.stringify(newData), function() {});
@@ -47,7 +53,13 @@ tryUpdateWeights = function(data, submission) {
 }
 
 playGame = function(AIString, submission) {
-    return 1;
+    // play a game between sub1 and sub2 without rendering
+    // create, initiate and run game
+    var game = new Game();
+    console.log(submission);
+    // TODO not sure how to return from run... should I just return from the break;?
+    var outcome = game.run(submission, AIString);
+    return outcome;
 }
 
 app.listen(8000);

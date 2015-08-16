@@ -57,3 +57,5 @@ var Points = {
 		[4,3,0,3,0,0,4,0,4,6],                             //9
 	]
 }
+
+module.exports = Points;

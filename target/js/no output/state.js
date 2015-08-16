@@ -38,3 +38,5 @@ var State = Class.extend({
 		return void 0;
 	}
 });
+
+module.exports = State;

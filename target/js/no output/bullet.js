@@ -59,9 +59,6 @@ var Bullet = Class.extend({
 	 * @param  {context2d} ctx agumented drawing context
 	 */
 	draw: function(ctx) {
-		ctx.beginPath();
-		ctx.moveTo(this.prevx, this.prevy);
-		ctx.lineTo(this.x, this.y);
-		ctx.stroke();
+		// Leave this to satisfy the interface.
 	}
 });

@@ -1,6 +1,9 @@
 /**
  * Asteroid class, extends Polygon see polygon.js
  */
+
+var Polygon = require('./polygon.js'); 
+
 var Asteroid = Polygon.extend({
 
 	/**
@@ -83,6 +86,8 @@ var Asteroid = Polygon.extend({
 	 * @param  {context2d} ctx augmented drawing conext
 	 */
 	draw: function(ctx) {
-		ctx.drawPolygon(this, this.x, this.y);
+		/// Leave this to satisfy the interface.
 	}
 });
+
+module.exports = Asteroid;

@@ -1,3 +1,6 @@
+var MenuState = require('./menuState.js');
+var InputHandeler = require('./input.js');
+
 /**
  * Enum type of existing states
  */
@@ -13,18 +16,16 @@ var States = {
  */
 var Game = Class.extend({
 
-
     /**
      * Constructor
      */
     init: function() {
-        // public important members used for update and rendering
-        this.canvas = new Canvas(626, 480);
+        // these are input handellers - public important members used for update and rendering
         this.inputs = [];
-
-        // set stroke style to white, since canvas has black
-        // bacground
-        this.canvas.ctx.strokeStyle = "#fff";
+        
+        // TODO check that 626 is the width and 480 is the height in 626, 480. store canvas dimensions for later use
+        this.width = 626; 
+        this.height = 480;
 
         // declate variables used for managing states
         this.currentState = null;
@@ -35,69 +36,62 @@ var Game = Class.extend({
     },
 
     /**
-     * Starts and runs the game
+     * Starts and runs the game. This is run after init
      */
-    run: function() {
-        var self = this;
-
-        this.canvas.animate(function() {
-            // change and initiate states when needed0
-            if (self.nextState !== States.NO_CHANGE) {
-                switch(self.nextState) {
+    run: function(submission, AIsubmission) {
+        while (true) {
+            if (this.nextState !== States.NO_CHANGE) {
+                switch(this.nextState) {
                     case States.MENU:
-                        self.currentState = new MenuState(self);
+                        this.currentState = new MenuState(this);
+                        this.startGame(submission, AIsubmission);
                     break;
                     case States.GAME:
-                        self.currentState = new GameState(self);
+                        this.currentState = new GameState(this);
                     break;
                     case States.END:
-                        self.sendGameData(self.currentState);
-                        self.currentState = new EndState(self);
+                        console.log("outcome set");
+                        this.outcome = this.currentState.gameData.outcome;
+                        this.currentState = new EndState(this);
                     break;
                 }
-                self.nextState = States.NO_CHANGE;
+                this.nextState = States.NO_CHANGE;
             }
 
-            if (self.currentState instanceof GameState) {
+            if (this.currentState instanceof GameState) {
                 // update and render active state
-                for (var i = 0; i < self.inputs.length; i++) {
-                    self.inputs[i].updateInputs(self.currentState.getClientGameState())
-                    self.currentState.handleInputs(self.inputs[i])
+                for (var i = 0; i < this.inputs.length; i++) {
+                    this.inputs[i].updateInputs(this.currentState.getClientGameState())
+                    this.currentState.handleInputs(this.inputs[i])
                 }
             }
 
-            self.currentState.update();
-            self.currentState.render(self.canvas.ctx);
+            this.currentState.update();
 
-            if (self.currentState.gameOver) {
-                self.nextState = States.END;
+            if (this.currentState.gameOver) {
+                this.nextState = States.END;
+                console.log("outcome")
+                if (this.outcome > 0) {
+                    console.log("You lose");
+                } else {
+                    console.log("You win");
+                }
+                // TODO test this while true method (used instead of animate since no canvas).THIS IS WHERE THE FUNCTION WILL EXIT
+                break;
             }
-        });
+        }
+
+        return this.outcome;
     },
 
-    startGame : function() {
+    startGame : function(submission, AIsubmission) {
         self = this;
-        xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                self.inputs = 
-                    [new InputHandeler(editor.getValue(), 1),
-                        new InputHandeler(xmlhttp.responseText, 2)]
-                        self.nextState = States.GAME;
-            }
-        }
-        xmlhttp.open("GET", "strategies/dummy.js", true);
-        xmlhttp.send()
-    },
 
-    sendGameData : function(gameState) {
-        xmlhttp.onreadystatechange=function() {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                console.log(xmlhttp.response);
-            }
-        }
-       xmlhttp.open("POST", "gameFinished", true);
-       xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-       xmlhttp.send(JSON.stringify(gameState.gameData));
+        self.inputs = 
+            [new InputHandeler(submission, 1),
+                new InputHandeler(AIsubmission, 2)]
+                self.nextState = States.GAME;
     }
 });
+
+module.exports = Game;
