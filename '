@@ -38,6 +38,7 @@ tryUpdateWeights = function(data) {
     }
     fs.readFile('./target/strategies/smarty.js', {encoding : 'utf8'}, function(err, data) {
         var AIString = 'var weights = ' + JSON.stringify(randomWeights) + ';' + data;
+        console.log(AIString);
         var winRate = 0;
         for (var i = 0; i < NUM_GAMES; i++) {
             fs.readdir('./target/strategies/submissions/', function(err, files) {
@@ -48,6 +49,7 @@ tryUpdateWeights = function(data) {
                     };
                 }
                 var fileIndex = Math.floor(Math.random() * filteredFiles.length);
+                console.log(filteredFiles[fileIndex])
                 fs.readFile('./target/strategies/submissions/' + filteredFiles[fileIndex], {encoding : 'utf8'}, function(err, data) {
                     winRate += playGame(AIString, data);
                 });
@@ -75,6 +77,6 @@ setInterval(function() {
     fs.readFile('./target/strategies/weights.json', {encoding : 'utf8'}, function(err, data) {
         tryUpdateWeights(data)
     });
-}, 6000)
+}, 600000)
 
 app.listen(8000);
