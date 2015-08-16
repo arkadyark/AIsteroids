@@ -1,7 +1,5 @@
 // AI that just stands still
 
-WEIGHTS = {}
-
 function getMove(myShip, otherShip, myBullets, otherBullets, asteroids) {
     move = {
         forward : false,

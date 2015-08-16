@@ -1,42 +1,53 @@
 var express = require('express')
 var http = require('http');
-var stringify = require('csv-stringify');
+var fs = require('fs');
 
 var app = express();
+
+LEARNING_RATE = 0.001;
+NUM_GAMES = 100;
+moves = ['fire', 'forward', 'rotateLeft', 'rotateRight'];
 
 app.use(express.static(__dirname + '/target'))
 
 app.post('/gameFinished', function(req, res) {
     var data = JSON.parse(req.body);
-    var csvOutput = [
-        ['outcome',
-         'move-fire', 'move-forward', 'move-rotateLeft', 'move-rotateRight',
-         'myShip-x', 'myShip-y', 'myShip-angle', 'myShip-vel-x', 'myShip-vel-y',
-         'otherShip-x', 'otherShip-y', 'otherShip-angle', 'otherShip-vel-x', 'otherShip-vel-y',
-         'myBullets-1-x', 'myBullets-1-y',
-         'myBullets-2-x', 'myBullets-2-y',
-         'myBullets-3-x', 'myBullets-3-y',
-         'myBullets-4-x', 'myBullets-4-y',
-         'myBullets-5-x', 'myBullets-5-y',
-         'otherBullets-1-x', 'otherBullets-1-y',
-         'otherBullets-2-x', 'otherBullets-2-y',
-         'otherBullets-3-x', 'otherBullets-3-y',
-         'otherBullets-4-x', 'otherBullets-4-y',
-         'otherBullets-5-x', 'otherBullets-5-y',
-         'asteroid-1-x', 'asteroid-1-y', 'asteroid-1-size',
-         'asteroid-2-x', 'asteroid-2-y', 'asteroid-2-size',
-         'asteroid-3-x', 'asteroid-3-y', 'asteroid-3-size',
-         'asteroid-4-x', 'asteroid-4-y', 'asteroid-4-size',
-         'asteroid-5-x', 'asteroid-5-y', 'asteroid-5-size',
-         'asteroid-6-x', 'asteroid-6-y', 'asteroid-6-size',
-         'asteroid-7-x', 'asteroid-7-y', 'asteroid-7-size',
-         'asteroid-8-x', 'asteroid-8-y', 'asteroid-8-size',
-         'asteroid-9-x', 'asteroid-9-y', 'asteroid-9-size',
-         'asteroid-10-x', 'asteroid-10-y', 'asteroid-10-size']
-    ];
-
     res.writeHead(200, {'Content-Type': 'text/plain'});
     res.end('Got data. Thanks!');
 });
+
+app.post('/submission', function(req, res) {
+    res.send('Received');
+    fs.readFile('./weights.json', {encoding : 'utf8'}, function(err, data) {tryUpdateWeights(data, req.body)});
+});
+
+tryUpdateWeights = function(data, submission) {
+    var data = JSON.parse(data);
+    var originalWinRate = parseFloat(data.winRate);
+    var weights = data.weights
+    randomWeights = {}
+    for (var weight in weights) {
+        randomWeights[weight] = {};
+        for (var i = 0; i < moves.length; i++) {
+            randomWeights[weight][moves[i]] = parseFloat(weights[weight][moves[i]]) + (Math.random() - 0.5)*LEARNING_RATE;
+        }
+    }
+    fs.readFile('./target/strategies/smarty.js', {encoding : 'utf8'}, function(err, data) {
+        var AIString = 'var weights = ' + randomWeights + ';' + data;
+        var winRate = 0;
+        for (var i = 0; i < NUM_GAMES; i++) {
+            winRate += playGame(AIString, submission)
+        }
+        winRate = winRate / NUM_GAMES
+        if (winRate > originalWinRate) {
+            var newData = {winRate : winRate, weights : randomWeights}
+            fs.writeFile('./weights.json', JSON.stringify(newData), function() {});
+        }
+    });
+}
+
+playGame = function(AIString, submission) {
+    return 1;
+}
 
 app.listen(8000);
