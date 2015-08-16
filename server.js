@@ -1,6 +1,6 @@
 var express = require('express')
 var http = require('http');
-var fs = require('graceful-fs');
+var fs = require('fs');
 var bodyParser = require('body-parser');
 
 var Class = require('./target/js/lib/class.js');
