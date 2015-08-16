@@ -180,66 +180,72 @@ var GameState = State.extend({
         // check if bullets hits another ship
         for (var i = 0, len = this.p1bullets.length; i < len; i++) {
             var b = this.p1bullets[i];
-            b.update();
+            if (b != undefined) {
 
-            // remove bullet if off screen
-            if (b.shallRemove) {
-                this.p1bullets.splice(i, 1);
-                len--;
-                i--;
-            }
 
-            // if any of the player2's points equals the bullet then there is a collision
-            if (this.player2.collidebullet(b)) {
-                this.player2.x = this.canvasWidth/3;
-                this.player2.y = this.canvasHeight/3;
-                this.player2.vel = {
-                    x: 0,
-                    y: 0
+                b.update();
+
+                // remove bullet if off screen
+                if (b.shallRemove) {
+                    this.p1bullets.splice(i, 1);
+                    len--;
+                    i--;
                 }
-                this.lifep2--;
-                if (this.lifep2 <= 0) {
-                    this.gameOver = true;
-                    this.gameData.outcome = 0;
-                }
-                this.player2.visible = false;
 
-                // remove bullet
-                this.p1bullets.splice(i, 1);
-                len--;
-                i--;
+                // if any of the player2's points equals the bullet then there is a collision
+                if (this.player2.collidebullet(b)) {
+                    this.player2.x = this.canvasWidth/3;
+                    this.player2.y = this.canvasHeight/3;
+                    this.player2.vel = {
+                        x: 0,
+                        y: 0
+                    }
+                    this.lifep2--;
+                    if (this.lifep2 <= 0) {
+                        this.gameOver = true;
+                        this.gameData.outcome = 0;
+                    }
+                    this.player2.visible = false;
+
+                    // remove bullet
+                    this.p1bullets.splice(i, 1);
+                    len--;
+                    i--;
+                }
             }
         }
 
         for (var i = 0, len = this.p2bullets.length; i < len; i++) {
             var b = this.p2bullets[i];
-            b.update();
+            if (b != undefined) {
+                b.update();
 
-            // remove bullet if off screen
-            if (b.shallRemove) {
-                this.p2bullets.splice(i, 1);
-                len--;
-                i--;
-            }
-
-            if (this.player1.collidebullet(b)) {
-                this.player1.x = this.canvasWidth/2;
-                this.player1.y = this.canvasHeight/2;
-                this.player1.vel = {
-                    x: 0,
-                    y: 0
+                // remove bullet if off screen
+                if (b.shallRemove) {
+                    this.p2bullets.splice(i, 1);
+                    len--;
+                    i--;
                 }
-                this.lifep1--;
-                if (this.lifep1 <= 0) {
-                    this.gameOver = true;
-                    this.gameData.outcome = 1;
-                }
-                this.player1.visible = false;
 
-                // remove bullet
-                this.p2bullets.splice(i, 1);
-                len--;
-                i--;
+                if (this.player1.collidebullet(b)) {
+                    this.player1.x = this.canvasWidth/2;
+                    this.player1.y = this.canvasHeight/2;
+                    this.player1.vel = {
+                        x: 0,
+                        y: 0
+                    }
+                    this.lifep1--;
+                    if (this.lifep1 <= 0) {
+                        this.gameOver = true;
+                        this.gameData.outcome = 1;
+                    }
+                    this.player1.visible = false;
+
+                    // remove bullet
+                    this.p2bullets.splice(i, 1);
+                    len--;
+                    i--;
+                }
             }
         }
 

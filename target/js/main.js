@@ -103,10 +103,10 @@ var Game = Class.extend({
     sendGameData : function(gameState) {
         if (gameState.gameData.outcome <= 0) {
             // If AI lost
-            xmlhttp=new XMLHttpRequest();
-           xmlhttp.open("POST", "submission", true);
-           xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-           xmlhttp.send(encodeURIComponent(self.playerSubmission));
+   //         xmlhttp=new XMLHttpRequest();
+ //          xmlhttp.open("POST", "submission", true);
+  //         xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+//           xmlhttp.send(encodeURIComponent(self.playerSubmission));
         }
     }
 });
