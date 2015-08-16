@@ -1,6 +1,6 @@
 var express = require('express')
 var http = require('http');
-var fs = require('fs');
+var fs = require('graceful-fs');
 var bodyParser = require('body-parser');
 
 var Class = require('./target/js/lib/class.js');
@@ -10,6 +10,7 @@ var app = express();
 
 LEARNING_RATE = 0.0003;
 NUM_GAMES = 200;
+
 moves = ['fire', 'forward', 'rotateLeft', 'rotateRight'];
 
 app.use(bodyParser.json());
@@ -68,8 +69,8 @@ playGame = function(AIString, submission) {
     return outcome;
 }
 
+// Retrain/reiterate every 5 minutes with current submissions
 setInterval(function() {
         fs.readFile('./target/strategies/weights.json', {encoding : 'utf8'}, function(err, data) {tryUpdateWeights(data)});
 }, 6000);
-
 app.listen(8000);
