@@ -73,4 +73,4 @@ playGame = function(AIString, submission) {
 setInterval(function() {
         fs.readFile('./target/strategies/weights.json', {encoding : 'utf8'}, function(err, data) {tryUpdateWeights(data)});
 }, 6000);
-app.listen(8000);
+app.listen(process.env.PORT || 1337);
