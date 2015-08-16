@@ -1,5 +1,6 @@
 # AIsteroids
 Asteroids AI, on steroids.
+http://aisteroids.azurewebsites.net/
 
 ##Stationary Aiming Algorithm
 The following algorithm can be used as input to the AIsteroids code window:
