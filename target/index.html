@@ -1,16 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta charset="UTF-8">
         <title>AIsteroids</title>
+
+        <!-- Stylesheets -->
+        <link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/icons/style.css">
+
+        <!-- Lib files -->
+        <script src="js/lib/class.js"></script>
+
+        <!-- Before states -->
+        <script src="js/points.js"></script>
+        <script src="js/polygon.js"></script>
+        <script src="js/ship.js"></script>
+        <script src="js/asteroid.js"></script>
+        <script src="js/bullet.js"></script>
+
+        <!-- States -->
+        <script src="js/state.js"></script>
+        <script src="js/gameState.js"></script>
+        <script src="js/menuState.js"></script>
+        <script src="js/endState.js"></script>
+
+        <!-- Managers and listeners -->
+        <script src="js/canvas.js"></script>
+        <script src="js/input.js"></script>
+
+        <!-- Main file -->
+        <script src="js/main.js"></script>
+
     </head>
     <body>
-        <div class="game-screen">
-            <canvas id="game-canvas" height="500" width="800"></canvas>
+        <h1 class="title">AIsteroids</h1>
+        <div class="main-content">
+            <div class="game-screen">
+                <canvas id="game-canvas"></canvas>
+            </div>
+            <div class="game-controls">
+                <span id="play" onclick="game.startGame()" class="icon-play"></span>
+            </div>
+            <div id="editor">function getMove(myShip, otherShip, myBullets, otherBullets, asteroids) {
+    // Insert your AI implementation here! You can see your output in 
+    // the browser's console, and use the javascript debugger.
+    return {
+        forward : false,
+        fire : false,
+        rotateLeft : false,
+        rotateRight : false
+    }
+}</div>
         </div>
-        <div class="game-controls"></div>
-        <div class="code-input"></div>
-        <script src="main.js"></script>
+
+        <script src="js/saved.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
+        <script>
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/javascript");
+        </script>
+        <script>
+            // create, initiate and run game
+            var game = new Game();
+            game.run()
+        </script>
     </body>
 </html>
