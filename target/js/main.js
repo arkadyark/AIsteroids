@@ -22,6 +22,8 @@ var Game = Class.extend({
         this.canvas = new Canvas(626, 480);
         this.inputs = [];
 
+        this.playerSubmission;
+
         // set stroke style to white, since canvas has black
         // bacground
         this.canvas.ctx.strokeStyle = "#fff";
@@ -77,27 +79,34 @@ var Game = Class.extend({
 
     startGame : function() {
         self = this;
+        self.playerSubmission = editor.getValue();
         xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                self.inputs = 
-                    [new InputHandeler(editor.getValue(), 1),
-                        new InputHandeler(xmlhttp.responseText, 2)]
-                        self.nextState = States.GAME;
+                getWeights=new XMLHttpRequest();
+                getWeights.onreadystatechange=function() {
+                    if (getWeights.readyState==4 && getWeights.status==200) {
+                        self.inputs = 
+                            [new InputHandeler(self.playerSubmission, 1),
+                                new InputHandeler('var weights = ' + JSON.stringify(JSON.parse(getWeights.responseText).weights) + ';' + xmlhttp.responseText, 2)]
+                                self.nextState = States.GAME;
+                    }
+                }
+                getWeights.open("GET", "strategies/weights.json", true);
+                getWeights.send();
             }
         }
-        xmlhttp.open("GET", "strategies/dummy.js", true);
+        xmlhttp.open("GET", "strategies/smarty.js", true);
         xmlhttp.send()
     },
 
     sendGameData : function(gameState) {
-        xmlhttp.onreadystatechange=function() {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                console.log(xmlhttp.response);
-            }
+        if (gameState.gameData.outcome <= 0) {
+            // If AI lost
+            xmlhttp=new XMLHttpRequest();
+           xmlhttp.open("POST", "submission", true);
+           xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+           xmlhttp.send(encodeURIComponent(self.playerSubmission));
         }
-       xmlhttp.open("POST", "gameFinished", true);
-       xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-       xmlhttp.send(JSON.stringify(gameState.gameData));
     }
 });

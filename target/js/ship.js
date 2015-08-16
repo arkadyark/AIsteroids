@@ -169,6 +169,8 @@ var Ship = Polygon.extend({
 	 * @param  {context2d} ctx augmented drawing context
 	 */
 	draw: function(ctx) {
-		// Leave nothing in this to satisfy the interface.
+        if (this.visible) {
+            ctx.drawPolygon(this, this.x, this.y);
+        }
 	}
 });

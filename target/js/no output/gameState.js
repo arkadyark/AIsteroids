@@ -2,6 +2,11 @@
  * AsteroidSize constant, probably a bad place to declare it
  */
 var AsteroidSize = 8;
+var State = require('./state.js');
+var Ship = require('./ship.js');
+var Points = require('./points.js');
+var Polygon = require('./polygon.js');
+var Asteroid = require('./asteroid.js');
 
 /**
  * GameState class, celled when game start, handle game updating and
@@ -195,7 +200,7 @@ var GameState = State.extend({
                 this.lifep2--;
                 if (this.lifep2 <= 0) {
                     this.gameOver = true;
-                    this.gameData.outcome = -1000;
+                    this.gameData.outcome = 0;
                 }
                 this.player2.visible = false;
 
@@ -227,7 +232,7 @@ var GameState = State.extend({
                 this.lifep1--;
                 if (this.lifep1 <= 0) {
                     this.gameOver = true;
-                    this.gameData.outcome = 1000;
+                    this.gameData.outcome = 1;
                 }
                 this.player1.visible = false;
 
@@ -256,7 +261,7 @@ var GameState = State.extend({
                 this.lifep1--;
                 if (this.lifep1 <= 0) {
                     this.gameOver = true;
-                    this.gameData.outcome = 1000;
+                    this.gameData.outcome = 1;
                 }
                 this.player1.visible = false;
             }
@@ -271,7 +276,7 @@ var GameState = State.extend({
                 this.lifep2--;
                 if (this.lifep2 <= 0) {
                     this.gameOver = true;
-                    this.gameData.outcome = -1000;
+                    this.gameData.outcome = 0;
                 }
                 this.player2.visible = false;
             }
@@ -379,3 +384,5 @@ var GameState = State.extend({
         // Leave this to satisfy interface
     }
 });
+
+module.exports = GameState;

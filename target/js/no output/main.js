@@ -1,4 +1,6 @@
 var MenuState = require('./menuState.js');
+var GameState = require('./gameState.js');
+var EndState = require('./endState.js');
 var InputHandeler = require('./input.js');
 
 /**
@@ -45,15 +47,14 @@ var Game = Class.extend({
                     case States.MENU:
                         this.currentState = new MenuState(this);
                         this.startGame(submission, AIsubmission);
-                    break;
+                        this.currentState = new GameState(this);
+                        break;
                     case States.GAME:
                         this.currentState = new GameState(this);
-                    break;
+                        break;
                     case States.END:
-                        console.log("outcome set");
-                        this.outcome = this.currentState.gameData.outcome;
                         this.currentState = new EndState(this);
-                    break;
+                        break;
                 }
                 this.nextState = States.NO_CHANGE;
             }
@@ -69,28 +70,20 @@ var Game = Class.extend({
             this.currentState.update();
 
             if (this.currentState.gameOver) {
+                this.outcome = this.currentState.gameData.outcome;
                 this.nextState = States.END;
-                console.log("outcome")
-                if (this.outcome > 0) {
-                    console.log("You lose");
-                } else {
-                    console.log("You win");
-                }
                 // TODO test this while true method (used instead of animate since no canvas).THIS IS WHERE THE FUNCTION WILL EXIT
-                break;
+                return this.outcome;
             }
         }
-
-        return this.outcome;
     },
 
     startGame : function(submission, AIsubmission) {
         self = this;
 
-        self.inputs = 
-            [new InputHandeler(submission, 1),
-                new InputHandeler(AIsubmission, 2)]
-                self.nextState = States.GAME;
+        self.inputs = [new InputHandeler(submission, 1),
+                new InputHandeler(AIsubmission, 2)];
+        self.nextState = States.GAME;
     }
 });
 

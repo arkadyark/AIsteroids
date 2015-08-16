@@ -1,6 +1,9 @@
 /**
  * EndState class, called when game is over
  */
+
+var State = require('./state');
+
 var EndState = State.extend({
 
 	/**
@@ -34,3 +37,5 @@ var EndState = State.extend({
 	render: function(ctx) {
 	}
 });
+
+module.exports = EndState;

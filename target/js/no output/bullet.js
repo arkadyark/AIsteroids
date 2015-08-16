@@ -62,3 +62,5 @@ var Bullet = Class.extend({
 		// Leave this to satisfy the interface.
 	}
 });
+
+module.exports = Bullet;

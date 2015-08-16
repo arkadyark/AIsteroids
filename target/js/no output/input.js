@@ -13,7 +13,6 @@ var InputHandeler = Class.extend({
 		// declare private fields
 		this.move = {forward : false, fire : false, rotateLeft : false, rotateRight : false};
         this.playerNumber = playerNumber;
-        console.log(submission);
         eval(submission);
         this.getMove = getMove
 		var self = this;

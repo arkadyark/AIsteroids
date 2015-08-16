@@ -5,6 +5,9 @@
 TURNS_BETWEEN_SHOTS = 5
 MAX_BULLETS = 4
 
+var Polygon = require('./Polygon');
+var Bullet = require('./Bullet');
+
 var Ship = Polygon.extend({
 
 	/**
@@ -179,3 +182,5 @@ var Ship = Polygon.extend({
 		}
 	}
 });
+
+module.exports = Ship;

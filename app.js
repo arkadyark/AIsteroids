@@ -8,7 +8,7 @@ var Game = require('./target/js/no output/main.js');
 
 var app = express();
 
-LEARNING_RATE = 0.001;
+LEARNING_RATE = 0.0001;
 NUM_GAMES = 100;
 moves = ['fire', 'forward', 'rotateLeft', 'rotateRight'];
 
@@ -16,20 +16,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname + '/target'))
 
-app.post('/gameFinished', function(req, res) {
-    var data = JSON.parse(req.body);
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Got data. Thanks!');
-});
-
 app.post('/submission', function(req, res) {
+    var code = Object.keys(req.body)[0];
     res.send('Received');
-    fs.readFile('./weights.json', {encoding : 'utf8'}, function(err, data) {tryUpdateWeights(data, req.body)});
+    fs.readFile('./target/strategies/weights.json', {encoding : 'utf8'}, function(err, data) {tryUpdateWeights(data, code)});
 });
 
 tryUpdateWeights = function(data, submission) {
     var data = JSON.parse(data);
     var originalWinRate = parseFloat(data.winRate);
+    console.log("Original win rate: " + originalWinRate);
     var weights = data.weights
     randomWeights = {}
     for (var weight in weights) {
@@ -39,12 +35,13 @@ tryUpdateWeights = function(data, submission) {
         }
     }
     fs.readFile('./target/strategies/smarty.js', {encoding : 'utf8'}, function(err, data) {
-        var AIString = 'var weights = ' + randomWeights + ';' + data;
+        var AIString = 'var weights = ' + JSON.stringify(randomWeights) + ';' + data;
         var winRate = 0;
         for (var i = 0; i < NUM_GAMES; i++) {
             winRate += playGame(AIString, submission);
         }
         winRate = winRate / NUM_GAMES;
+        console.log("Slightly random win rate: " + winRate);
         if (winRate > originalWinRate) {
             var newData = {winRate : winRate, weights : randomWeights}
             fs.writeFile('./weights.json', JSON.stringify(newData), function() {});
@@ -56,8 +53,6 @@ playGame = function(AIString, submission) {
     // play a game between sub1 and sub2 without rendering
     // create, initiate and run game
     var game = new Game();
-    console.log(submission);
-    // TODO not sure how to return from run... should I just return from the break;?
     var outcome = game.run(submission, AIString);
     return outcome;
 }

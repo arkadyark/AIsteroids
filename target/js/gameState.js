@@ -377,13 +377,7 @@ var GameState = State.extend({
      */
     render: function(ctx) {
         ctx.clearAll();
-        // draw score and extra lives
-        // TODO delete this next block of code
-        ctx.vectorText(this.score, 3, 35, 15);
-        for (var i = 0; i < this.lifep1; i++) {
-            ctx.drawPolygon(this.lifepolygon, 40+15*i, 50);
-        }
-
+        
         // draw all asteroids and bullets
         for (var i = 0, len = this.asteroids.length; i < len; i++) {
             this.asteroids[i].draw(ctx);
@@ -396,7 +390,7 @@ var GameState = State.extend({
         }
         // draw game over messege
         if (this.gameOver) {
-            if (this.outcome > 0) {
+            if (this.lifep2 > 0) {
                 ctx.vectorText("You lose", 4, null, null);
             } else {
                 ctx.vectorText("You win", 4, null, null);
